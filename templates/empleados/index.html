@@ -1,5 +1,7 @@
 {% include 'header.html' %}
-    
+
+    <a href="{{url_for('create')}}" class="btn btn-success m-2">Crear nuevo empleado</a>
+
     <table class="table table-light table-striped">
       <thead class="thead-dark">
         <tr>
@@ -7,6 +9,7 @@
           <th>Foto</th>
           <th>Nombre</th>
           <th>Correo</th>
+          <th>Fecha</th>
           <th>Acciones</th>
         </tr>
         </thead>
@@ -15,14 +18,15 @@
             <tr>
               <td scope="row">{{empleado[0]}}</td>
               <td>
-                <img src="uploads/{{empleado[3]}}" class="img-thumbnail" width="100" alt="">                
+                <img src="/uploads/{{empleado[3]}}" class="img-thumbnail" width="100" alt="">                
               </td>
               <td>{{empleado[1]}}</td>
               <td>{{empleado[2]}}</td>
+              <td>{{empleado[4]}}</td>
               <td>
-                <a href="/edit/{{empleado[0]}}">Editar</a>
+                <a href="/edit/{{empleado[0]}}" class="btn btn-warning">Editar</a>
                 | 
-                <a href="/destroy/{{empleado[0]}}">Eliminar</a> 
+                <a onclick="return confirm('¿Desea eliminar al empleado?')" href="/destroy/{{empleado[0]}}" class="btn btn-danger">Eliminar</a> 
               </td>
             </tr>          
           {% endfor %}

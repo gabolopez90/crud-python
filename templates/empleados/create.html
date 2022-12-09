@@ -1,16 +1,53 @@
 {% include 'header.html' %}
 
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-danger" role="alert">
+            {% for message in messages %}
+                {{message}}
+            {% endfor %}
+        </div>
+    {% endif%}
+{% endwith %}
+
 <form action="/store" method="post" enctype="multipart/form-data">
-    Nombre:
-    <input type="text" name="txtNombre" id="txtNombre">
 
-    Correo:
-    <input type="email" name="txtCorreo" id="txtCorreo">
+    <div class="card m-5">
+        <div class="card-header">
+            Ingresar Empleado
+        </div>
+        <div class="card-body">
+            <h4 class="card-title">Datos del Empleado</h4>
+            <p class="card-text">
+                <div class="form-group">
+                  <label for="txtNombre">Nombre:</label>
+                  <input type="text" name="txtNombre" id="txtNombre" class="form-control" >
+                </div>
 
-    Foto:
-    <input type="file" name="txtFoto" id="txtFoto">
+                <div class="form-group">
+                    <label for="txtCorreo">Correo:</label>
+                    <input type="text" name="txtCorreo" id="txtCorreo" class="form-control" >
+                </div>
 
-    <input type="submit" value="Agregar">
+                <div class="form-group">
+                    <label for="txtFecha">Fecha:</label>
+                    <input type="date" name="txtFecha" id="txtFecha" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="txtFoto">Foto:</label>
+                    <input type="file" name="txtFoto" id="txtFoto" class="form-control" >
+                </div>  
+                
+                <div class="form-group">
+                    <input type="submit" value="Agregar" class="btn btn-success">
+                    <a href="{{url_for('index')}}" class="btn btn-primary">Regresar</a>
+                </div> 
+            </p>
+        </div>
+    </div>
+
+    
 
 </form>
 

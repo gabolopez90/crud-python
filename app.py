@@ -1,11 +1,12 @@
 from flask import Flask
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, url_for, flash
 from flaskext.mysql import MySQL
 from flask import send_from_directory
 from datetime import datetime
 import os
 
 app = Flask(__name__)
+app.secret_key="Develoteca"
 
 mysql = MySQL()
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
@@ -70,6 +71,11 @@ def storage():
     _nombre = request.form['txtNombre']
     _correo = request.form['txtCorreo']
     _foto = request.files['txtFoto']
+    _fecha = request.form['txtFecha']
+
+    if _nombre == "" or _correo == "" or _foto.filename == "" or _fecha == "":
+        flash("Recuerda llenar todos los campos")
+        return redirect(url_for("create"))
 
     now = datetime.now()
     tiempo= now.strftime("%Y%H%M%S")
@@ -78,9 +84,9 @@ def storage():
         nuevoNombreFoto = tiempo+_foto.filename
         _foto.save("uploads/"+nuevoNombreFoto)
 
-    sql = "INSERT INTO `empleados` (`id`, `nombre`, `correo`, `foto`) VALUES (NULL, %s, %s, %s);"
+    sql = "INSERT INTO `empleados` (`id`, `nombre`, `correo`, `foto`, `fecha`) VALUES (NULL, %s, %s, %s,%s);"
 
-    datos = (_nombre,_correo,nuevoNombreFoto)
+    datos = (_nombre,_correo,nuevoNombreFoto,_fecha)
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute(sql,datos)
@@ -94,10 +100,11 @@ def update():
     _correo = request.form['txtCorreo']
     _foto = request.files['txtFoto']
     id=request.form['txtID']
+    _fecha = request.form['txtFecha']
     
-    sql = "UPDATE `empleados` SET nombre=%s, correo=%s WHERE id=%s;"
+    sql = "UPDATE `empleados` SET nombre=%s, correo=%s, fecha=%s WHERE id=%s;"
 
-    datos = (_nombre,_correo,id)
+    datos = (_nombre,_correo,_fecha,id)
     conn = mysql.connect()
     cursor = conn.cursor()
 
